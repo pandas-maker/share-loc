@@ -1,3 +1,21 @@
+# Virtual environment
 env/
-src/pycache
-src/.env
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
