@@ -13,7 +13,7 @@ __pycache__/
 .env.local
 
 # IDE files
-.vscode/
+
 .idea/
 
 # OS junk
