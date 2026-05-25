@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: telegrambot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: WEBHOOK_URL
+        generateValue: true
+    disk:
+      name: telegrambot-data
+      mountPath: /tmp
+      sizeGB: 1
++++++++ REPLACE
+</diff>
+<task_progress>
+- [x] Analyze the error and explore codebase
+- [x] Identify version compatibility issues
+- [x] Fix the deployment configuration
+- [x] Create proper Render setup files
+- [ ] Update dependencies
+- [ ] Test the solution
+</task_progress>
+</write_to_file>

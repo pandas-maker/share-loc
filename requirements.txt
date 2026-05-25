@@ -1,5 +1,4 @@
 python-dotenv==1.0.0
-aiohttp==3.9.0
-python-telegram-bot[webhooks]==20.7
-uvicorn==0.27.0
+python-telegram-bot[webhooks]==21.9
+uvicorn==0.23.2
 gunicorn==21.2.0
