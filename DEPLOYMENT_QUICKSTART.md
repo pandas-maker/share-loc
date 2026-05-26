@@ -1,14 +1,37 @@
 # Quick Start: Deploy to Render
 
+## Local Development vs Production
+
+The bot now supports **two modes**:
+
+### Local Development (Polling Mode)
+- Run without any special configuration
+- Uses environment variables from `.env` file
+- Bot polls Telegram for updates every 1-5 seconds
+- **Use this when testing locally**
+
+### Production (Render) - Webhook Mode
+- Requires `WEBHOOK_URL` environment variable
+- Better performance and lower latency
+- **Use this when deploying to Render**
+
 ## Quick Deployment Steps
 
-### 1. Prepare Your Code
+### 1. Local Development
 
 ```bash
+# 1. Set your bot token in .env file
+echo "BOT_TOKEN=your_token_here" > telegrambot/.env
+
+# 2. Run the bot
 cd telegrambot
-git add .
-git commit -m "Ready for Render deployment"
-git push origin main
+python main.py
+```
+
+You should see:
+```
+✅ Bot started in POLLING mode (local development)
+📝 Set WEBHOOK_URL to switch to webhook mode for production
 ```
 
 ### 2. Deploy to Render
@@ -24,6 +47,7 @@ git push origin main
    - **Start Command**: `python main.py`
 5. Add Environment Variables:
    - `BOT_TOKEN`: Your bot token from BotFather
+   - `WEBHOOK_URL`: Your Render app URL (e.g., `https://telegrambot.onrender.com`)
    - `PORT`: `10000`
 6. Click **Deploy Web Service**
 
@@ -48,8 +72,8 @@ Send `/start` to your bot on Telegram and test the features!
 - **Webhook Support**: Added proper webhook server configuration
 - **Environment Variables**: Fixed config.py to handle Render variables
 - **Async Setup**: Converted main function to async for proper webhook handling
+- **Local Development**: Now supports polling mode for local testing
 
-## Files Created
 
 - `Procfile` - Render process configuration
 - `.render.yaml` - Automated deployment config
