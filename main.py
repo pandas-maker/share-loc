@@ -1,4 +1,5 @@
 import os
+import asyncio
 import logging
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters
 from telegram import BotCommand
@@ -15,7 +16,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 async def set_commands(app):
-    """Set bot commands"""
     commands = [
         BotCommand("start", "Start the bot"),
         BotCommand("cancel", "Cancel operation"),
@@ -23,7 +23,6 @@ async def set_commands(app):
     await app.bot.set_my_commands(commands)
 
 def main():
-    # Get environment variables
     PORT = int(os.environ.get('PORT', 8080))
     WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
     
@@ -31,7 +30,6 @@ def main():
         logger.error("❌ BOT_TOKEN not set!")
         return
     
-    # Create application
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     
     # Add handlers
@@ -43,11 +41,11 @@ def main():
     
     app.post_init = set_commands
     
-    # Use webhook on Render, polling locally
     if WEBHOOK_URL:
         logger.info(f"🚀 Starting bot in WEBHOOK mode on port {PORT}")
         logger.info(f"🔗 Webhook URL: {WEBHOOK_URL}/webhook")
         
+        # This works across Python versions
         app.run_webhook(
             listen="0.0.0.0",
             port=PORT,
