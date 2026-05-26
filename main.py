@@ -29,10 +29,6 @@ def main():
         logger.error("❌ BOT_TOKEN not set!")
         return
     
-    logger.info(f"Starting bot...")
-    logger.info(f"WEBHOOK_URL: {WEBHOOK_URL}")
-    logger.info(f"PORT: {PORT}")
-    
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     
     # Add handlers
@@ -45,16 +41,18 @@ def main():
     app.post_init = set_commands
     
     if WEBHOOK_URL:
-        webhook_path = f"{WEBHOOK_URL}/webhook"
+        # Remove trailing slash if present
+        webhook_base = WEBHOOK_URL.rstrip('/')
+        webhook_url = f"{webhook_base}/webhook"
+        
         logger.info(f"🚀 Starting bot in WEBHOOK mode on port {PORT}")
-        logger.info(f"🔗 Webhook URL: {webhook_path}")
+        logger.info(f"🔗 Webhook URL: {webhook_url}")
         
         app.run_webhook(
             listen="0.0.0.0",
             port=PORT,
-            webhook_url=webhook_path,
-            drop_pending_updates=True,
-            secret_token=None
+            webhook_url=webhook_url,
+            drop_pending_updates=True
         )
     else:
         logger.info("🚀 Starting bot in POLLING mode (local development)")
