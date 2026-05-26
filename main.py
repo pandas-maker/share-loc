@@ -1,5 +1,6 @@
 import os
 import logging
+import secrets
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters
 from telegram import BotCommand
 from src.config import BOT_TOKEN
@@ -24,6 +25,7 @@ async def set_commands(app):
 def main():
     PORT = int(os.environ.get('PORT', 8080))
     WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
+    SECRET_TOKEN = os.environ.get('WEBHOOK_SECRET_TOKEN')
     
     if not BOT_TOKEN:
         logger.error("❌ BOT_TOKEN not set!")
@@ -48,11 +50,18 @@ def main():
         logger.info(f"🚀 Starting bot in WEBHOOK mode on port {PORT}")
         logger.info(f"🔗 Webhook URL: {webhook_url}")
         
+        # Generate secret token if not provided
+        if not SECRET_TOKEN:
+            SECRET_TOKEN = secrets.token_hex(16)
+            logger.warning("⚠️ WEBHOOK_SECRET_TOKEN not set. Generated a new one for development.")
+            logger.warning(f"🔒 Secret Token: {SECRET_TOKEN}")
+        
         app.run_webhook(
             listen="0.0.0.0",
             port=PORT,
             webhook_url=webhook_url,
-            drop_pending_updates=True
+            secret_token=SECRET_TOKEN,
+            drop_pending_updates=False
         )
     else:
         logger.info("🚀 Starting bot in POLLING mode (local development)")
