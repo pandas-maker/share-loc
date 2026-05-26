@@ -94,6 +94,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle all button clicks"""
     query = update.callback_query
+    logger.info(f"🔥🔥🔥 CALLBACK RECEIVED: {query.data} 🔥🔥🔥")  # ADD THIS LINE
     logger.info(f"📱 Callback received: {query.data} from user {update.effective_user.id}")
     
     await query.answer()
