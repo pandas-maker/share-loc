@@ -1,5 +1,4 @@
 import os
-import asyncio
 import logging
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters
 from telegram import BotCommand
@@ -30,6 +29,10 @@ def main():
         logger.error("❌ BOT_TOKEN not set!")
         return
     
+    logger.info(f"Starting bot...")
+    logger.info(f"WEBHOOK_URL: {WEBHOOK_URL}")
+    logger.info(f"PORT: {PORT}")
+    
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     
     # Add handlers
@@ -42,15 +45,16 @@ def main():
     app.post_init = set_commands
     
     if WEBHOOK_URL:
+        webhook_path = f"{WEBHOOK_URL}/webhook"
         logger.info(f"🚀 Starting bot in WEBHOOK mode on port {PORT}")
-        logger.info(f"🔗 Webhook URL: {WEBHOOK_URL}/webhook")
+        logger.info(f"🔗 Webhook URL: {webhook_path}")
         
-        # This works across Python versions
         app.run_webhook(
             listen="0.0.0.0",
             port=PORT,
-            webhook_url=f"{WEBHOOK_URL}/webhook",
-            drop_pending_updates=True
+            webhook_url=webhook_path,
+            drop_pending_updates=True,
+            secret_token=None
         )
     else:
         logger.info("🚀 Starting bot in POLLING mode (local development)")
